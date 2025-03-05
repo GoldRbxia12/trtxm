@@ -1,24 +1,21 @@
-name: Chrome Remote Desktop
+name: Windows - LiteManager
 
-on: 
+on:
   workflow_dispatch:
-    inputs:
-      authcode:
-        description: 'Enter CRD code'
-        required: true
-      pincode:
-        description: 'Six digit Pin'
-        required: true
-  
+
 jobs:
   build:
-    runs-on: Windows-latest
-
+    name: Start Building...
+    runs-on: windows-latest
+    
     steps:
-    - uses: actions/checkout@v2
-    - name: Initializing Setup
-      run: ./setup.ps1
-    - name: Starting CRD
-      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
-    - name: Keep Alive
-      run: ./timeout.ps1
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/chamod12/lm_win-10_github_rdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Connect to LiteManager
+        run: cmd /c show.bat
+
+      - name: Time Counter
+        run: cmd /c loop.bat
